@@ -6,7 +6,7 @@ use bevy_lunex::prelude::*;
 fn main() {
     App::new()
         .add_plugins((DefaultPlugins, UiPlugin::<NoData, NoData, MyWidget>::new()))
-        .add_plugins(UiDebugPlugin::<NoData, NoData, MyWidget>::new())
+        //.add_plugins(UiDebugPlugin::<NoData, NoData, MyWidget>::new())
 
         .add_systems(Startup, setup)
 
@@ -49,7 +49,7 @@ fn setup(
     )).id();
     cmd.entity(player).push_children(&[cam]);
 
-    for x in 0..1 {
+    for x in -1..2 {
         cmd.spawn((
             UiTreeBundle::<NoData, NoData, MyWidget> {
                 transform: Transform::from_xyz(-400.0, 300.0, 0.0 + (200.0 * x as f32)),
@@ -68,7 +68,7 @@ fn setup(
                 MyWidget,
                 root.clone(),
                 UiLayout::Window::FULL.size(Abs((818.0, 965.0))).pack(),
-                //UiMaterial3dBundle::from_image(&mut mat, assets.load("bevycom.png")),
+                UiMaterial3dBundle::from_image(&mut mat, assets.load("bevycom.png")),
             ));
     
             let head = root.add("Head");
