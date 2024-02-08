@@ -562,6 +562,7 @@ dependencies = [
 [[package]]
 name = "bevy_lunex"
 version = "0.0.1"
+source = "git+https://github.com/bytestring-net/bevy_lunex?branch=bevy-issue-z-ordering#b352b043479ae7196be13e69e794cf0b23a027f2"
 dependencies = [
  "bevy",
  "lunex_engine",
@@ -1879,6 +1880,7 @@ checksum = "b5e6163cb8c49088c2c36f57875e58ccd8c87c7427f7fbd50ea6710b2f3f2e8f"
 [[package]]
 name = "lunex_engine"
 version = "0.0.1"
+source = "git+https://github.com/bytestring-net/bevy_lunex?branch=bevy-issue-z-ordering#b352b043479ae7196be13e69e794cf0b23a027f2"
 dependencies = [
  "bevy",
  "colored",
