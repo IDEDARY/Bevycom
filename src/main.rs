@@ -6,7 +6,7 @@ use bevy_lunex::prelude::*;
 fn main() {
     App::new()
         .add_plugins((DefaultPlugins, UiPlugin::<NoData, NoData, MyWidget>::new()))
-        //.add_plugins(UiDebugPlugin::<NoData, NoData, MyWidget>::new())
+        .add_plugins(UiDebugPlugin::<NoData, NoData, MyWidget>::new())
 
         .add_systems(Startup, setup)
 
@@ -68,8 +68,8 @@ fn setup(
                 MyWidget,
                 root.clone(),
                 UiLayout::Window::FULL.size(Abs((818.0, 965.0))).pack(),
-                //UiMaterial3dBundle::from_image(&mut mat, assets.load("bevycom.png")),
-                UiMaterial3dBundle::from_transparent_image(&mut mat, assets.load("bevycom.png")),
+                UiMaterial3dBundle::from_image(&mut mat, assets.load("bevycom.png")),
+                //UiMaterial3dBundle::from_transparent_image(&mut mat, assets.load("bevycom.png")),
             ));
     
             let head = root.add("Head");
