@@ -52,7 +52,7 @@ fn setup(
     for x in -1..2 {
         cmd.spawn((
             UiTreeBundle::<NoData, NoData, MyWidget> {
-                transform: Transform::from_xyz(-400.0, 300.0, 0.0 + (200.0 * x as f32)),
+                transform: Transform::from_xyz(-400.0, 300.0, 0.0 + (350.0 * x as f32)),
                 tree: UiTree::new("MyWidget"),
                 ..default()
             },
