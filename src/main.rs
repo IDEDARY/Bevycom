@@ -3,6 +3,9 @@ use boilerplate::*;
 use bevy::prelude::*;
 use bevy_lunex::prelude::*;
 
+#[derive(Component, Debug, Default, Clone, PartialEq)]
+pub struct MyWidget;
+
 fn main() {
     App::new()
         .add_plugins((DefaultPlugins, UiPlugin::<NoData, NoData, MyWidget>::new()))
@@ -137,7 +140,3 @@ fn setup(
     }
 
 }
-
-
-#[derive(Component, Debug, Default, Clone, PartialEq)]
-pub struct MyWidget;
