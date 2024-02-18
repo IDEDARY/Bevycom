@@ -3,6 +3,9 @@ use bevy::{
     prelude::*,
 };
 
+#[derive(Component, Debug, Default, Clone, PartialEq)]
+pub struct MyWidget;
+
 #[derive(Component)]
 pub struct PlayerCam {
     pub orbit: Vec3,
