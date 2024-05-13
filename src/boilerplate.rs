@@ -1,10 +1,11 @@
-use bevy::{
-    input::mouse::{MouseMotion, MouseWheel},
-    prelude::*,
-};
+use bevy::{app::PluginGroupBuilder, input::mouse::{MouseMotion, MouseWheel}, prelude::*, render::settings::WgpuSettings};
+
+
+// #========================================#
+// #=== BOILERPLATE REQUIRED FOR BEVYCOM ===#
 
 #[derive(Component, Debug, Default, Clone, PartialEq)]
-pub struct MyWidget;
+pub struct MainUi;
 
 #[derive(Component)]
 pub struct PlayerCam {
@@ -49,4 +50,34 @@ pub fn zoom_playercam(mut mouse_wheel_events: EventReader<MouseWheel>, mut query
     for mut camera in &mut query {
         camera.distance += -delta*25.0;
     }
+}
+
+
+// #======================================#
+// #=== JUST SPAWN PRESETS FOR CLARITY ===#
+
+/// Function to return default plugins with correct settings
+pub fn default_plugins() -> PluginGroupBuilder {
+    DefaultPlugins.set (
+        WindowPlugin {
+            primary_window: Some(Window {
+                title: "Bevycom".into(),
+                mode: bevy::window::WindowMode::BorderlessFullscreen,
+                present_mode: bevy::window::PresentMode::AutoNoVsync,
+                resolution: bevy::window::WindowResolution::new(1280.0, 720.0),
+                ..default()
+            }),
+            ..default()
+        }
+    ).set (
+        bevy::render::RenderPlugin {
+            render_creation: bevy::render::settings::RenderCreation::Automatic(
+                WgpuSettings {
+                    power_preference: bevy::render::settings::PowerPreference::HighPerformance,
+                    ..default()
+                }
+            ),
+            ..default()
+        }
+    )
 }
