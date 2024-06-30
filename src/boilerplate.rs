@@ -4,9 +4,6 @@ use bevy::{app::PluginGroupBuilder, input::mouse::{MouseMotion, MouseWheel}, pre
 // #========================================#
 // #=== BOILERPLATE REQUIRED FOR BEVYCOM ===#
 
-#[derive(Component, Debug, Default, Clone, PartialEq)]
-pub struct MainUi;
-
 #[derive(Component)]
 pub struct PlayerCam {
     pub orbit: Vec3,
@@ -62,7 +59,7 @@ pub fn default_plugins() -> PluginGroupBuilder {
         WindowPlugin {
             primary_window: Some(Window {
                 title: "Bevycom".into(),
-                mode: bevy::window::WindowMode::BorderlessFullscreen,
+                mode: bevy::window::WindowMode::Windowed,
                 present_mode: bevy::window::PresentMode::AutoNoVsync,
                 resolution: bevy::window::WindowResolution::new(1280.0, 720.0),
                 ..default()
