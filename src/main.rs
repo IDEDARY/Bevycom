@@ -8,73 +8,65 @@ use boilerplate::*;
 fn main() {
     App::new()
         .add_plugins((default_plugins(), UiPlugin))
-        .add_plugins(UiDebugPlugin::<MainUi>::new())
-
         .add_systems(Startup, setup)
-
-        .add_systems(Update, rotate_playercam)
-        .add_systems(Update, zoom_playercam)
+        .add_systems(Update, (rotate_playercam, zoom_playercam))
         .run();
 }
 
 fn setup(
     mut commands: Commands,
-    mut mesh: ResMut<Assets<Mesh>>,
     mut material: ResMut<Assets<StandardMaterial>>,
     asset_server: Res<AssetServer>,
 ) {
+    // Spawn cursor
+    commands.spawn(CursorBundle::default());
 
     // Spawn camera
-    commands.spawn(
-        PbrBundle { transform: Transform::from_xyz(0.0, 0.0, 0.0).with_scale(Vec3::new(1.0, 1.0, 1.0)), ..default() }
-    ).with_children(|parent| {
-        parent.spawn((
-            Camera3dBundle::default(),
-            PlayerCam {
-                orbit: Vec3::new(0.0, 0.0, 0.0),
-                distance: 800.0,
-                sensitivity: Vec2::splat(0.1),
-            }
-        ));
-    });
+    commands.spawn((
+        Camera3dBundle::default(),
+        PlayerCam {
+            orbit: Vec3::new(0.0, 0.0, 0.0),
+            distance: 800.0,
+            sensitivity: Vec2::splat(0.1),
+        }
+    ));
 
+    // Spawn it 3 times
+    for x in [-1, 0, 1] {
 
-    for x in -1..2 {
-
-        // Spawn the master ui
+        // Spawn the floating Ui panel
         commands.spawn((
             UiTreeBundle::<MainUi> {
                 transform: Transform::from_xyz(-400.0, 300.0, 0.0 + (300.0 * x as f32)),
                 tree: UiTree::new("MyWidget"),
                 ..default()
             },
-            mesh.add(Mesh::from(Cuboid { half_size: Vec3::splat(10.0) })),
-            material.add(Color::srgb(1.0, 0.0, 1.0)),
         )).with_children(|ui| {
-    
-            let root = UiLink::<MainUi>::path("Root");
             ui.spawn((
-                root.clone(),
+                // Link this widget
+                UiLink::<MainUi>::path("Root"),
+
+                // The layout that is used when in base state
                 UiLayout::window_full().size((818.0, 965.0)).pack::<Base>(),
-                //UiMaterial3dBundle::from_image(&mut material, asset_server.load("bevycom.png")),
+
+                // Give the mesh an image
                 UiMaterial3dBundle::from_transparent_image(&mut material, asset_server.load("bevycom.png")),
 
-                UiLayout::window_full().size((1000.0, 965.0)).pack::<Hover>(),
-                UiLayoutController::default(),
+                // Make the panel pickable
                 PickableBundle::default(),
-                bevy::sprite::SpriteSource::default(),
-                UiAnimator::<Hover>::new().forward_speed(5.0).backward_speed(1.0),
+
+                // This is required to control our hover animation
+                UiAnimator::<Hover>::new().forward_speed(6.0).backward_speed(5.0),
+
+                // This is required for Layout animation
+                UiLayoutController::default(),
+
+                // The layout that is used when in hover state
+                UiLayout::window_full().x(100.0).size((818.0, 965.0)).pack::<Hover>(),
+
+                // This will change cursor icon on mouse hover
                 OnHoverSetCursor::new(CursorIcon::Pointer),
             ));
-
-            ui.spawn((
-                root.add("Head"),
-                UiLayout::window_full().height(Rl(35.0)).pack::<Base>(),
-                //UiMaterial3dBundle::from_image(&mut material, asset_server.load("bevycom.png")),
-                //UiMaterial3dBundle::from_transparent_image(&mut material, asset_server.load("bevycom_base_head.png")),
-            ));
-    
         }); 
     }
-
 }
